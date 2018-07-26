@@ -48,19 +48,27 @@ svg.append("g")
   .enter().append("path")
     .attr("d", pathMonth);
 
-d3.csv("log.csv", function(error, csv) {
-  if (error) throw error;
+    d3.csv("https://raw.githubusercontent.com/AlexCanCode/LearningSummaryChart/master/Simple-Log.csv", function(d) { 
+      d.Time = Number(d.Time)
 
-  const data = d3.nest()      
-  	.key(function(d) { return d.Date; })
-      .rollup(function(d) { return (d.time)})
-    .object(csv);
+      const groupByName = d3.nest()
+                            .key(function(d) {return d.Day; })
+                            .entries(d.Time)
+              console.log(groupByName)
 
-  rect.filter(function(d) { return d in data; })
-      .attr("fill", function(d) { return color(data[d]); })
-    .append("title")
-      .text(function(d) { return d + ": " + formatPercent(data[d]); });
-});
+    })
+
+/* const data = d3.nest()      
+        .key(function(d) { return d.date; })
+          .rollup(function(d) { return (d.time)})
+        .object(csv);
+
+      rect.filter(function(d) { return d in data; })
+          .attr("fill", function(d) { return color(data[d]); })
+        .append("title")
+          .text(function(d) { return d + ": " + formatPercent(data[d]); }); */
+
+ 
 
 function pathMonth(t0) {
   const t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
